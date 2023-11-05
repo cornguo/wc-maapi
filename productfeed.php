@@ -11,6 +11,9 @@ header('content-type: text/xml');
 echo '<?xml version="1.0" encoding="utf-8"?>';
 echo '<Products>';
 foreach ($products as $product) {
+    if ('' === $product->get_sku()) {
+        continue;
+    }
     $category = strip_tags(wc_get_product_category_list($product->get_id()));
     echo '<Product>';
     echo '<SKU>' . $product->get_sku() . '</SKU>';
