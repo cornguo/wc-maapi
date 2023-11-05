@@ -423,3 +423,13 @@ function wc_maapi_edit_post_maapi_order($maapiOrderId) {
     }
 }
 add_action('edit_post_maapi_order', 'wc_maapi_edit_post_maapi_order');
+
+
+function wc_maapi_register_productfeed() {
+    add_rewrite_rule(
+        '^wc-maapi\/productfeed\.xml$',
+        'wp-content/plugins/wc-maapi/productfeed.php',
+	'top'
+    );
+}
+add_action('init', 'wc_maapi_register_productfeed');
