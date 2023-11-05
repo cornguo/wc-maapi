@@ -135,6 +135,7 @@ function wc_maapi_register_settings() {
         'offer_id'        => 'Offer ID',
         'advertiser_id'   => 'Advertiser ID',
         'commission_rate' => 'Commission Rate',
+        'notice_text'     => 'Notice Text',
     ];
 
     foreach ($fields as $field => $fieldName) {
@@ -145,10 +146,18 @@ add_action( 'admin_init', 'wc_maapi_register_settings' );
 
 function wc_maapi_field($field) {
     $options = get_option('wc_maapi_options');
-    echo '<input id="wc_maapi_' . $field . '"'
-        . ' name="wc_maapi_options[' . $field . ']"'
-        . ' type="text"'
-        . ' value="' . esc_attr( $options[$field] ) . '" />';
+    if ('notice_text' === $field) {
+        echo '<textarea id="wc_maapi_' . $field . '"'
+            . ' name="wc_maapi_options[' . $field . ']"'
+            . ' type="text" rows="6" cols="60">'
+            . $options[$field]
+            . '</textarea>';
+    } else {
+        echo '<input id="wc_maapi_' . $field . '"'
+            . ' name="wc_maapi_options[' . $field . ']"'
+            . ' type="text"'
+            . ' value="' . esc_attr( $options[$field] ) . '" />';
+    }
 }
 
 function wc_maapi_admin_settings() {
@@ -433,3 +442,14 @@ function wc_maapi_register_productfeed() {
     );
 }
 add_action('init', 'wc_maapi_register_productfeed');
+
+
+function wc_maapi_print_warning() {
+    $options = get_option('wc_maapi_options');
+    $text = str_replace(PHP_EOL, '<br />', strip_tags($options['notice_text']));
+    echo '<div style="border:1px solid #333; background-color:#FFC; margin:0.5em 0; padding: 0.5em;">';
+    echo $text;
+    echo '</div>';
+}
+add_action('woocommerce_before_checkout_form', 'wc_maapi_print_warning');
+add_action('woocommerce_thankyou', 'wc_maapi_print_warning');
