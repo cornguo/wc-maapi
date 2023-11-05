@@ -25,8 +25,8 @@ function wc_maapi_register_maapi_order() {
         'internal'     => true,
         'has_archive'  => false,
         'show_ui'      => true,
-	'supports'     => ['title'],
-	// disables post create/delete functions
+        'supports'     => ['title'],
+        // disables post create/delete functions
         'capabilities' => [
             'edit_post'              => true,
             'read_post'              => true,
@@ -95,7 +95,7 @@ function maapi_api_result_meta_box($maapiOrder) {
             echo 'ERROR: ' . $result['error'] . '<br />';
             echo 'error messaage: ' . $result['message'];
         } else {
-	    print_r($result['response']);
+            print_r($result['response']);
         }
         echo '</blockquote>';
     }
@@ -438,7 +438,7 @@ function wc_maapi_register_productfeed() {
     add_rewrite_rule(
         '^wc-maapi\/productfeed\.xml$',
         'wp-content/plugins/wc-maapi/productfeed.php',
-	'top'
+        'top'
     );
 }
 add_action('init', 'wc_maapi_register_productfeed');
