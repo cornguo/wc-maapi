@@ -129,7 +129,7 @@ add_action('post_submitbox_start', 'wc_maapi_post_submitbox_start');
 // settings
 function wc_maapi_register_settings() {
     register_setting('wc_maapi_options', 'wc_maapi_options');
-    add_settings_section( 'api_settings', 'API Settings', '__return_false', 'wc_maapi_' );
+    add_settings_section('api_settings', 'API Settings', '__return_false', 'wc_maapi_');
 
     $fields = [
         'offer_id'        => 'Offer ID',
@@ -142,7 +142,7 @@ function wc_maapi_register_settings() {
         add_settings_field('wc_maapi_' . $field, $fieldName, 'wc_maapi_field', 'wc_maapi_', 'api_settings', $field);
     }
 }
-add_action( 'admin_init', 'wc_maapi_register_settings' );
+add_action('admin_init', 'wc_maapi_register_settings');
 
 function wc_maapi_field($field) {
     $options = get_option('wc_maapi_options');
@@ -166,8 +166,8 @@ function wc_maapi_admin_settings() {
     <form action="options.php" method="post">
         <?php 
         settings_fields('wc_maapi_options');
-        do_settings_sections( 'wc_maapi_' ); ?>
-        <input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
+        do_settings_sections('wc_maapi_'); ?>
+        <input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e('Save'); ?>" />
     </form>
     <?php
 }
