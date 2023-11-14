@@ -379,7 +379,7 @@ function wc_maapi_call_maapi($orderId, $convType = '') {
     return [
         'timestamp' => $now,
         'type'      => $convType,
-        'error'     => 'unknown_error',
+        'error'     => 'no_order_or_refund_data',
     ];
 }
 
