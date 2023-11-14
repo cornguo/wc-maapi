@@ -41,7 +41,13 @@ class MarketAmericaApi {
 
     public function trackRefund($data) {
         $reqData = $this->buildOrderData($data, ['is_adjustment' => 1]);
-        $reqData['payout'] = $this->getPayout($reqData['sale_amount']);
+        $amount = $this->getPayout($reqData['sale_amount']);
+        if ($amount > 0) {
+            $amount *= -1;
+        }
+
+        $reqData['payout'] = $this->getPayout($amount);
+        $reqData['revenue'] = $reqData['payout'];
 
         return $this->request($reqData);
     }
