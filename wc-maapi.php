@@ -215,6 +215,7 @@ function wc_maapi_init() {
     if (isset(WC()->session)) {
         if (!WC()->session->has_session()) {
             WC()->session->set_customer_session_cookie(true);
+            wc_maapi_get_rid_click_id();
         }
     }
 }
@@ -225,11 +226,13 @@ function wc_maapi_get_rid_click_id() {
         return;
     }
 
-    if (isset($_GET['RID'])) {
-        WC()->session->ma_rid = $_GET['RID'];
-    }
-    if (isset($_GET['Click_ID'])) {
-        WC()->session->ma_click_id = $_GET['Click_ID'];
+    if (isset(WC()->session) && WC()->session->has_session()) {
+        if (isset($_GET['RID'])) {
+            WC()->session->ma_rid = $_GET['RID'];
+        }
+        if (isset($_GET['Click_ID'])) {
+            WC()->session->ma_click_id = $_GET['Click_ID'];
+        }
     }
 }
 add_action('init', 'wc_maapi_get_rid_click_id');
