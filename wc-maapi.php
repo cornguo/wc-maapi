@@ -94,6 +94,13 @@ function maapi_api_result_meta_box($maapiOrder) {
         if (isset($result['error'])) {
             echo 'ERROR: ' . $result['error'] . '<br />';
             echo 'error messaage: ' . $result['message'];
+            if (isset($result['errors'])) {
+                echo '<ul>';
+                foreach ($result['errors'] as $error) {
+                    echo '<li>' . $error['publicMessage'] . '</li>';
+                }
+                echo '</ul>';
+            }
         } else {
             print_r($result['response']);
         }
@@ -317,6 +324,7 @@ function wc_maapi_call_maapi($orderId, $convType = '') {
                     'type'      => $convType,
                     'error'     => 'api_error',
                     'message'   => $result['response']['errorMessage'],
+                    'errors'    => $result['response']['errors'],
                 ];
             } else {
                 return [
