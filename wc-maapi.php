@@ -92,8 +92,7 @@ function maapi_api_result_meta_box($maapiOrder) {
         echo '<h4>' . $result['type'] . ' @ ' . $timeStr . '</h4>';
         echo '<blockquote>';
         if (isset($result['error'])) {
-            echo 'ERROR: ' . $result['error'] . '<br />';
-            echo 'error messaage: ' . $result['message'];
+            echo 'Error [' . $result['error'] . ']: ' . $result['message'];
             if (isset($result['errors'])) {
                 echo '<ul>';
                 foreach ($result['errors'] as $error) {
