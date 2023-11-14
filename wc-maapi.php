@@ -324,6 +324,13 @@ function wc_maapi_call_maapi($orderId, $convType = '') {
     $now = time();
     $maConfig = wc_maapi_get_ma_config($orderId);
     $maData = wc_maapi_get_ma_data($orderId, $convType);
+    if (!in_array($convType, ['purchase', 'refund'])) {
+        return [
+            'timestamp' => $now,
+            'type'      => $convType,
+            'error'     => 'wrong_conv_type',
+        ];
+    }
     if (null === $maConfig['rid'] || null === $maConfig['clickId']) {
         return [
             'timestamp' => $now,
@@ -333,8 +340,14 @@ function wc_maapi_call_maapi($orderId, $convType = '') {
     }
     if (null !== $maData) {
         try {
+            $result = '';
             $maapi = new MarketAmericaApi($maConfig);
-            $result = $maapi->trackConversion($maData);
+            if ('purchase' === $convType) {
+                $result = $maapi->trackConversion($maData);
+            }
+            if ('refund' === $convType) {
+                $result = $maapi->trackRefund($maData);
+            }
             $result = json_decode($result, true);
             $result['timestamp'] = $now;
             if (-1 === $result['response']['status']) {
