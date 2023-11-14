@@ -265,10 +265,15 @@ function wc_maapi_order_status_processing($orderId) {
             'ping_status'    => 'closed',
         ];
 
-        $maapiOrderId = wp_insert_post($maapiOrderArr);
-
-        update_post_meta($maapiOrderId, 'ma_order_id', $orderId);
-        update_post_meta($maapiOrderId, 'ma_data_purchase', wp_slash(json_encode($maData, JSON_UNESCAPED_UNICODE)));
+        // check if rid & clickId is set
+        $maConfig = wc_maapi_get_ma_config($orderId);
+        if (!empty($maConfig['rid']) && !empty($maConfig['clickId'])) {
+            // create maapi_order item
+            $maapiOrderId = wp_insert_post($maapiOrderArr);
+            // set metadata for the item
+            update_post_meta($maapiOrderId, 'ma_order_id', $orderId);
+            update_post_meta($maapiOrderId, 'ma_data_purchase', wp_slash(json_encode($maData, JSON_UNESCAPED_UNICODE)));
+        }
     }
 }
 add_action('woocommerce_order_status_processing', 'wc_maapi_order_status_processing');
