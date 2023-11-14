@@ -101,18 +101,18 @@ function maapi_api_result_meta_box($maapiOrder) {
                 echo '</ul>';
             }
         } else {
-            $data = $result['response'];
-
-            if (isset($data['Conversion'])) {
-                echo 'ID: ' . $data['Conversion']['id'] . '<br />';
-                echo 'RID: ' . $data['Conversion']['affiliate_info1'] . '<br />';
-                echo 'Click ID: ' . $data['Conversion']['ad_id'] . '<br />';
-                echo 'Order ID: ' . $data['Conversion']['advertiser_info'] . '<br />';
-                echo 'Is adjustment: ' . $data['Conversion']['is_adjustment'] . '<br />';
-                echo 'Status: ' . $data['Conversion']['status'];
+            if (isset($result['response']) && isset($result['response']['Conversion'])) {
+                $response = $result['response']['Conversion'];
+                echo 'ID: ' . $response['id'] . '<br />';
+                echo 'RID: ' . $response['affiliate_info1'] . '<br />';
+                echo 'Click ID: ' . $response['ad_id'] . '<br />';
+                echo 'Order ID: ' . $response['advertiser_info'] . '<br />';
+                echo 'Is adjustment: ' . $response['is_adjustment'] . '<br />';
+                echo 'Status: ' . $response['status'] . '<br />';
+                echo 'Event ID: ' . $response['tune_event_id'];
             } else {
                 echo '<pre>';
-                print_r($data);
+                print_r($result);
                 echo '</pre>';
             }
         }
