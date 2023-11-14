@@ -34,6 +34,7 @@ class MarketAmericaApi {
     public function trackConversion($data) {
         $reqData = $this->buildOrderData($data);
         $reqData['payout'] = $this->getPayout($reqData['sale_amount']);
+        $reqData['revenue'] = $reqData['payout'];
 
         return $this->request($reqData);
     }
