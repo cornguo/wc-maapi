@@ -102,7 +102,20 @@ function maapi_api_result_meta_box($maapiOrder) {
                 echo '</ul>';
             }
         } else {
-            print_r($result['response']);
+            if (isset($result['response']['data'])) {
+                $data = $result['response']['data'];
+                if (isset($data['Conversion'])) {
+                    echo 'ID: ' . $data['Conversion']['id'] . '<br />';
+                    echo 'RID: ' . $data['Conversion']['affiliate_info1'] . '<br />';
+                    echo 'Click ID: ' . $data['Conversion']['ad_id'] . '<br />';
+                    echo 'Order ID: ' . $data['Conversion']['advertiser_info'] . '<br />';
+                    echo 'Status: ' . $data['Conversion']['status'];
+                } else {
+                    echo '<pre>';
+                    print_r($data);
+                    echo '</pre>';
+                }
+            }
         }
         echo '</blockquote>';
     }
