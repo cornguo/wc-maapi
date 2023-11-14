@@ -103,6 +103,7 @@ function maapi_api_result_meta_box($maapiOrder) {
         } else {
             if (isset($result['response']) && isset($result['response']['Conversion'])) {
                 $response = $result['response']['Conversion'];
+                echo 'Date: ' . $response['session_datetime'] . '<br />';
                 echo 'ID: ' . $response['id'] . '<br />';
                 echo 'RID: ' . $response['affiliate_info1'] . '<br />';
                 echo 'Click ID: ' . $response['ad_id'] . '<br />';
