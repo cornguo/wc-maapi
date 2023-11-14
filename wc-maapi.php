@@ -101,19 +101,19 @@ function maapi_api_result_meta_box($maapiOrder) {
                 echo '</ul>';
             }
         } else {
-            if (isset($result['response']['data'])) {
-                $data = $result['response']['data'];
-                if (isset($data['Conversion'])) {
-                    echo 'ID: ' . $data['Conversion']['id'] . '<br />';
-                    echo 'RID: ' . $data['Conversion']['affiliate_info1'] . '<br />';
-                    echo 'Click ID: ' . $data['Conversion']['ad_id'] . '<br />';
-                    echo 'Order ID: ' . $data['Conversion']['advertiser_info'] . '<br />';
-                    echo 'Status: ' . $data['Conversion']['status'];
-                } else {
-                    echo '<pre>';
-                    print_r($data);
-                    echo '</pre>';
-                }
+            $data = $result['response'];
+
+            if (isset($data['Conversion'])) {
+                echo 'ID: ' . $data['Conversion']['id'] . '<br />';
+                echo 'RID: ' . $data['Conversion']['affiliate_info1'] . '<br />';
+                echo 'Click ID: ' . $data['Conversion']['ad_id'] . '<br />';
+                echo 'Order ID: ' . $data['Conversion']['advertiser_info'] . '<br />';
+                echo 'Is adjustment: ' . $data['Conversion']['is_adjustment'] . '<br />';
+                echo 'Status: ' . $data['Conversion']['status'];
+            } else {
+                echo '<pre>';
+                print_r($data);
+                echo '</pre>';
             }
         }
         echo '</blockquote>';
@@ -342,7 +342,7 @@ function wc_maapi_call_maapi($orderId, $convType = '') {
                 return [
                     'timestamp' => $now,
                     'type'      => $convType,
-                    'response'  => $result['response'],
+                    'response'  => $result['response']['data'],
                 ];
             }
             return $result;
