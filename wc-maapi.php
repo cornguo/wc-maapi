@@ -107,6 +107,8 @@ function maapi_api_result_meta_box($maapiOrder) {
                 echo 'RID: ' . $response['affiliate_info1'] . '<br />';
                 echo 'Click ID: ' . $response['ad_id'] . '<br />';
                 echo 'Order ID: ' . $response['advertiser_info'] . '<br />';
+                echo 'Sale amount: ' . $response['sale_amount'] . '<br />';
+                echo 'Payout: ' . $response['payout'] . '<br />';
                 echo 'Is adjustment: ' . $response['is_adjustment'] . '<br />';
                 echo 'Status: ' . $response['status'] . '<br />';
                 echo 'Event ID: ' . $response['tune_event_id'];
