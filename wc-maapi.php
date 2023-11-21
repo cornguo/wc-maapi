@@ -281,6 +281,7 @@ function wc_maapi_order_status_processing($orderId) {
             update_post_meta($maapiOrderId, 'ma_data_purchase', wp_slash(json_encode($maData, JSON_UNESCAPED_UNICODE)));
         }
     }
+    wc_maapi_send_conversion($orderId, 'purchase');
 }
 add_action('woocommerce_order_status_processing', 'wc_maapi_order_status_processing');
 
@@ -299,6 +300,7 @@ function wc_maapi_order_status_refunded($orderId) {
     if (null !== $maapiOrder) {
         update_post_meta($maapiOrder->ID, 'ma_data_refund', wp_slash(json_encode($maData, JSON_UNESCAPED_UNICODE)));
     }
+    wc_maapi_send_conversion($orderId, 'refund');
 }
 add_action('woocommerce_order_status_refunded', 'wc_maapi_order_status_refunded');
 
