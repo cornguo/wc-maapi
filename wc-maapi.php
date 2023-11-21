@@ -314,7 +314,7 @@ function wc_maapi_send_conversion($orderId, $convType = '') {
     // check if conversion had been sent
     $sentStatus = intval(get_post_meta($maapiOrder->ID, $sentMetaKey, true));
 
-    if (1 === $sentStatus) {
+    if ($sentStatus > 0) {
         return null;
     }
 
@@ -331,7 +331,7 @@ function wc_maapi_send_conversion($orderId, $convType = '') {
         ]);
         // set conversion sent
         if (!isset($ret['error'])) {
-            update_post_meta($maapiOrder->ID, $sentMetaKey, 1);
+            update_post_meta($maapiOrder->ID, $sentMetaKey, time());
         }
     }
     return $ret;
