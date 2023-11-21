@@ -186,7 +186,7 @@ function wc_maapi_admin_settings() {
     ?>
     <h2>Market America Integration Settings</h2>
     <form action="options.php" method="post">
-        <?php 
+        <?php
         settings_fields('wc_maapi_options');
         do_settings_sections('wc_maapi_'); ?>
         <input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e('Save'); ?>" />
