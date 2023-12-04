@@ -148,6 +148,25 @@ function wc_maapi_post_submitbox_start($post) {
 }
 add_action('post_submitbox_start', 'wc_maapi_post_submitbox_start');
 
+function wc_maapi_manage_add_columns($columns) {
+    return array_merge($columns, ['ma_sent_purchase' => 'Purchase', 'ma_sent_refund' => 'Refund']);
+}
+add_filter('manage_maapi_order_posts_columns', 'wc_maapi_manage_add_columns');
+
+function wc_maapi_manage_display_columns($column_key, $post_id) {
+    if (in_array($column_key, ['ma_sent_purchase', 'ma_sent_refund'])) {
+        $time = get_post_meta($post_id, $column_key, true);
+        if ($time) {
+            $date = new DateTime('2000-01-01', wp_timezone());
+            $date->setTimestamp($time);
+            $timeStr = $date->format('Y-m-d H:i:s (P)');
+            echo 'Sent at [' . $timeStr . ']';
+        }
+    }
+}
+add_action('manage_maapi_order_posts_custom_column', 'wc_maapi_manage_display_columns', 10, 2);
+
+
 // settings
 function wc_maapi_register_settings() {
     register_setting('wc_maapi_options', 'wc_maapi_options');
