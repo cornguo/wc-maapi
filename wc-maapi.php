@@ -240,6 +240,12 @@ function wc_maapi_init() {
 }
 add_action('woocommerce_init', 'wc_maapi_init');
 
+function wc_maapi_set_cookie_js($key, $val, $time=7200) {
+    echo '<script type="text/javascript">'
+        . 'document.cookie="' . $key . '=' . $val . '; max-age=' . $time . '; path=/";'
+        . '</script>' . PHP_EOL;
+}
+
 function wc_maapi_get_rid_click_id() {
     if (is_admin()) {
         return;
@@ -248,14 +254,27 @@ function wc_maapi_get_rid_click_id() {
     if (isset(WC()->session) && WC()->session->has_session()) {
         if (isset($_GET['RID'])) {
             WC()->session->ma_rid = $_GET['RID'];
+            add_action('wp_footer', function () {
+                wc_maapi_set_cookie_js('ma_rid', $_GET['RID']);
+            });
         }
         if (isset($_GET['Click_ID'])) {
             WC()->session->ma_click_id = $_GET['Click_ID'];
+            add_action('wp_footer', function () {
+                wc_maapi_set_cookie_js('ma_click_id', $_GET['Click_ID']);
+            });
         }
     }
 }
 add_action('init', 'wc_maapi_get_rid_click_id');
 
+function wc_maapi_thankyou() {
+    add_action('wp_footer', function() {
+        wc_maapi_set_cookie_js('ma_rid', '', -999);
+        wc_maapi_set_cookie_js('ma_click_id', '', -999);
+    });
+}
+add_action('woocommerce_thankyou', 'wc_maapi_thankyou');
 
 // hook into woocommerce functions
 function wc_maapi_checkout_update_order_meta($orderId) {
@@ -265,6 +284,9 @@ function wc_maapi_checkout_update_order_meta($orderId) {
         // clear session data
         WC()->session->ma_rid = null;
         WC()->session->ma_click_id = null;
+    } elseif (isset($_COOKIE['ma_rid']) && isset($_COOKIE['ma_click_id'])) {
+        update_post_meta($orderId, 'ma_rid', $_COOKIE['ma_rid']);
+        update_post_meta($orderId, 'ma_click_id', $_COOKIE['ma_click_id']);
     }
 }
 add_action('woocommerce_checkout_update_order_meta', 'wc_maapi_checkout_update_order_meta');
