@@ -299,7 +299,7 @@ function wc_maapi_order_status_processing($orderId) {
 
     $maData = [
         'timestamp'   => time(),
-        'date'        => $order->date_modified->date('Y-m-d'),
+        'date'        => $order->date_created->date('Y-m-d'),
         'orderId'     => $orderId,
         'orderAmount' => $amount,
     ];
