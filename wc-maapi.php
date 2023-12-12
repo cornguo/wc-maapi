@@ -64,7 +64,8 @@ function maapi_order_data_meta_box($maapiOrder) {
     if (null !== $maDataPurchase) {
         echo '<h4>PURCHASE</h4>';
         echo '<blockquote>';
-        echo 'Date: ' . $maDataPurchase['date'] . '<br />';
+        echo 'Timestamp:' . $maDataPurchase['timestamp'] . '<br />';
+        echo 'Order Date: ' . $maDataPurchase['date'] . '<br />';
         echo 'Order ID: ' . $maDataPurchase['orderId'] . '<br />';
         echo 'Order Amount: ' . $maDataPurchase['orderAmount'];
         echo '</blockquote>';
@@ -73,7 +74,8 @@ function maapi_order_data_meta_box($maapiOrder) {
     if (null !== $maDataRefund) {
         echo '<h4>REFUND</h4>';
         echo '<blockquote>';
-        echo 'Date: ' . $maDataRefund['date'] . '<br />';
+        echo 'Timestamp:' . $maDataRefund['timestamp'] . '<br />';
+        echo 'Order Date: ' . $maDataRefund['date'] . '<br />';
         echo 'Order ID: ' . $maDataRefund['orderId'] . '<br />';
         echo 'Order Amount: ' . $maDataRefund['orderAmount'];
         echo '</blockquote>';
@@ -296,6 +298,7 @@ function wc_maapi_order_status_processing($orderId) {
     $amount = $order->get_total() - $order->get_total_tax() - $order->get_total_shipping();
 
     $maData = [
+        'timestamp'   => time(),
         'date'        => $order->date_modified->date('Y-m-d'),
         'orderId'     => $orderId,
         'orderAmount' => $amount,
@@ -329,9 +332,11 @@ add_action('woocommerce_order_status_processing', 'wc_maapi_order_status_process
 function wc_maapi_order_status_refunded($orderId) {
     $order = wc_get_order($orderId);
     $amount = $order->get_total() - $order->get_total_tax() - $order->get_total_shipping();
+    $maDataPurchase = wc_maapi_get_ma_data($orderId, 'purchase');
 
     $maData = [
-        'date'        => $order->date_modified->date('Y-m-d'),
+        'timestamp'   => time(),
+        'date'        => $maDataPurchase['date'],
         'orderId'     => $orderId,
         'orderAmount' => -1 * $amount,
     ];
@@ -488,6 +493,9 @@ function wc_maapi_get_ma_data($orderId, $convType = '') {
         }
         if (null !== $ret) {
             $ret = json_decode($ret, true);
+        }
+        if (!isset($ret['timestamp'])) {
+            $ret['timestamp'] = -1;
         }
         return $ret;
     }
