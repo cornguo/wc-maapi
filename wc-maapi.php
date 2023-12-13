@@ -323,9 +323,9 @@ function wc_maapi_order_status_processing($orderId) {
             // set metadata for the item
             update_post_meta($maapiOrderId, 'ma_order_id', $orderId);
             update_post_meta($maapiOrderId, 'ma_data_purchase', wp_slash(json_encode($maData, JSON_UNESCAPED_UNICODE)));
+            wc_maapi_send_conversion($orderId, 'purchase');
         }
     }
-    wc_maapi_send_conversion($orderId, 'purchase');
 }
 add_action('woocommerce_order_status_processing', 'wc_maapi_order_status_processing');
 
@@ -345,8 +345,8 @@ function wc_maapi_order_status_refunded($orderId) {
 
     if (null !== $maapiOrder) {
         update_post_meta($maapiOrder->ID, 'ma_data_refund', wp_slash(json_encode($maData, JSON_UNESCAPED_UNICODE)));
+        wc_maapi_send_conversion($orderId, 'refund');
     }
-    wc_maapi_send_conversion($orderId, 'refund');
 }
 add_action('woocommerce_order_status_refunded', 'wc_maapi_order_status_refunded');
 
@@ -357,6 +357,11 @@ function wc_maapi_send_conversion($orderId, $convType = '') {
     remove_action('edit_post_maapi_order', 'wc_maapi_edit_post_maapi_order');
     $sentMetaKey = 'ma_sent_' . $convType;
     $maapiOrder = wc_maapi_get_maapi_order($orderId);
+
+    if (null === $maapiOrder) {
+        return null;
+    }
+
     // check if conversion had been sent
     $sentStatus = intval(get_post_meta($maapiOrder->ID, $sentMetaKey, true));
 
