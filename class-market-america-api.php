@@ -46,7 +46,7 @@ class MarketAmericaApi {
             $amount *= -1;
         }
 
-        $reqData['payout'] = $this->getPayout($amount);
+        $reqData['payout'] = $amount;
         $reqData['revenue'] = $reqData['payout'];
 
         return $this->request($reqData);
