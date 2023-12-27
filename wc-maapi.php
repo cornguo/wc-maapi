@@ -461,7 +461,7 @@ function wc_maapi_get_ma_config($orderId) {
         return [
             'offerId'        => $options['offer_id'],
             'advertiserId'   => $options['advertiser_id'],
-            'commissionRate' => $options['commission_rate'],
+            'commissionRate' => floatval($options['commission_rate']),
             'rid'            => $rid,
             'clickId'        => $clickId,
         ];
