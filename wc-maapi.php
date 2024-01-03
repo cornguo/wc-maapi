@@ -162,6 +162,11 @@ function wc_maapi_manage_display_columns($column_key, $post_id) {
             $date = new DateTime('2000-01-01', wp_timezone());
             $date->setTimestamp($time);
             $timeStr = $date->format('Y-m-d H:i:s (P)');
+            $maDataJson = get_post_meta($post_id, str_replace('_sent_', '_data_', $column_key), true);
+            if (null !== $maDataJson) {
+                $maData = json_decode($maDataJson, true);
+                echo 'Order date [' . $maData['date'] . '], amount [' . $maData['orderAmount'] . ']<br />';
+            }
             echo 'Sent at [' . $timeStr . ']';
         }
     }
