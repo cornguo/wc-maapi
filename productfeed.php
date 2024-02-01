@@ -17,12 +17,12 @@ foreach ($products as $product) {
     $category = strip_tags(wc_get_product_category_list($product->get_id()));
     echo '<Product>';
     echo '<SKU>' . $product->get_sku() . '</SKU>';
-    echo '<Name>' . $product->get_name() . '</Name>';
+    echo '<Name><![CDATA[' . $product->get_name() . ']]></Name>';
     echo '<Description><![CDATA[' . $product->get_description() . ']]></Description>';
-    echo '<URL>' . $product->get_permalink() . '</URL>';
+    echo '<URL><![CDATA[' . $product->get_permalink() . ']]></URL>';
     echo '<Price>' . $product->get_price() . '</Price>';
     echo '<LargeImage><![CDATA[' . get_the_post_thumbnail_url($product->get_id(), 'large') . ']]></LargeImage>';
-    echo '<Category>' . $category . '</Category>';
+    echo '<Category><![CDATA[' . $category . ']]></Category>';
     echo '</Product>';
 }
 echo '</Products>';
